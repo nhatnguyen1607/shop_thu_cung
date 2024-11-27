@@ -232,6 +232,8 @@
         @csrf
         <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?')">Hủy đơn hàng</button>
     </form>
+    @elseif ($order->trangthai == 'giao thành công')
+    <a href="{{ route('donhang.danhgia', ['id' => $order->id_dathang]) }}" class="btn btn-success">Đánh giá</a>
     @endif
     &nbsp;<a class="btn btn-secondary" href="{{URL::to('/donhang')}}">Quay lại</a>
 </div>

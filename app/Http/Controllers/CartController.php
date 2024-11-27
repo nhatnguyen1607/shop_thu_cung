@@ -153,22 +153,21 @@ class CartController extends Controller
         $khachhang = Khachhang::where('idtaikhoan', $user->idtaikhoan)->first();
         $khachhang_id = $khachhang->id_kh;
 
-        $order = Dathang::create([
-            'id_kh' => $khachhang_id,
-            'ngaydathang' => Carbon::now(),
-            'ngaygiaohang' => null,
-            'trangthai' => "đang xử lý",
-            'tongtien' => $validatedData['tongtien'],
-            'phuongthucthanhtoan' => $validatedData['redirect'],
-            'diachigiaohang' => $validatedData['diachigiaohang'],
-        ]);
-
         $cartItems = DB::table('giohang')
             ->where('khachhang_id', $khachhang_id)
             ->get();
 
         foreach ($cartItems as $item) {
             $sanpham = Sanpham::find($item->sanpham_id);
+            $order = Dathang::create([
+                'id_kh' => $khachhang_id,
+                'ngaydathang' => Carbon::now(),
+                'ngaygiaohang' => null,
+                'trangthai' => "đang xử lý",
+                'tongtien' => $validatedData['tongtien'],
+                'phuongthucthanhtoan' => $validatedData['redirect'],
+                'diachigiaohang' => $validatedData['diachigiaohang'],
+            ]);
             ChitietDonhang::create([
                 'tensp' => $sanpham->tensp,
                 'soluong' => $item->quantity,

@@ -99,11 +99,8 @@
           <!-- <td class="d-none d-md-table-cell">{{$order->diachigiaohang}}</td> -->
 
           <td>
-            @if($order->trangthai=='giao thành công')
-            <a href="{{ route('donhang.danhgia', ['id' => $order->id_dathang]) }}" class="btn btn-success">Đánh giá</a>
-            @else
+
             <a href="{{ route('donhang.xemdonhang', ['id' => $order->id_dathang]) }}" class="btn btn-primary">Xem đơn hàng</a>
-            @endif
           </td>
         </tr>
         @endforeach

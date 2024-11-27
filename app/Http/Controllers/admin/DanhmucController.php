@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\admin;
+
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
@@ -13,37 +14,47 @@ class DanhmucController extends Controller
 
     private $DanhmucRepository;
 
-    public function __construct(IDanhmucRepository $DanhmucRepository) {
+    public function __construct(IDanhmucRepository $DanhmucRepository)
+    {
         $this->DanhmucRepository = $DanhmucRepository;
     }
 
-    public function index(){
+    public function index()
+    {
         $Danhmucs = $this->DanhmucRepository->allDanhmuc();
 
         return view('admin.danhmucs.index', ['Danhmucs' => $Danhmucs]);
     }
 
-    public function create(){
+    public function create()
+    {
         return view('admin.danhmucs.create');
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
 
         $validatedData = $request->validate([
             'ten_danhmuc' => 'required',
         ]);
+        $existingDanhmuc = Danhmuc::where('ten_danhmuc', $validatedData['ten_danhmuc'])->first();
 
+        if ($existingDanhmuc) {
+            return redirect()->back()->with('error', 'Tên danh mục đã tồn tại!');
+        }
         $this->DanhmucRepository->storeDanhmuc($validatedData);
 
         return redirect()->route('danhmuc.index');
     }
 
-    public function edit($id){
+    public function edit($id)
+    {
         $danhmuc = $this->DanhmucRepository->findDanhmuc($id);
         return view('admin.danhmucs.edit', ['danhmuc' => $danhmuc]);
     }
 
-    public function update($id, Request $request){
+    public function update($id, Request $request)
+    {
         $validatedData = $request->validate([
             'ten_danhmuc' => 'required',
         ]);
@@ -52,10 +63,10 @@ class DanhmucController extends Controller
         return redirect()->route('danhmuc.index')->with('success', 'Cập nhập danh mục thành công');
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         $this->DanhmucRepository->deleteDanhmuc($id);
 
         return redirect()->route('danhmuc.index')->with('success', 'Xóa danh mục thành công');
     }
-
 }

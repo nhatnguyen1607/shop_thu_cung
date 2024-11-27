@@ -16,7 +16,6 @@ use App\Models\Sanpham;
 
 class OrdersController extends Controller
 {
-    //Xử lí order khi bấm "Mua ngay"
     public function order(Request $request, $id)
     {
         if (!Auth::check()) {
@@ -137,9 +136,10 @@ class OrdersController extends Controller
         $this->checkout($request);
         return redirect($vnp_Url);
     }
-    public function nhanHang($id){
+    public function nhanHang($id)
+    {
         $order = Dathang::find($id);
-        $order->trangthai= 'giao thành công';
+        $order->trangthai = 'giao thành công';
         $order->save();
         return redirect()->back()->with('success', 'Xác nhận đơn hàng thành công');
     }
@@ -149,6 +149,17 @@ class OrdersController extends Controller
 
         if (!$order) {
             return redirect()->back()->with('error', 'Đơn hàng không tồn tại.');
+        }
+
+        $orderDetails = ChitietDonhang::where('id_dathang', $id)->get();
+
+        foreach ($orderDetails as $detail) {
+            $sanpham = Sanpham::find($detail->id_sanpham);
+
+            if ($sanpham) {
+                $sanpham->soluong += $detail->soluong;
+                $sanpham->save();
+            }
         }
 
         $order->trangthai = 'đã hủy';
