@@ -56,6 +56,12 @@
             </a>
           </li>
           <li class="sidebar-item">
+            <a class="sidebar-link" href="{{URL::to('/admin/gallery')}}">
+              <i class="align-middle" data-feather="layout"></i>
+              <span class="align-middle">Gallery</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
             <a class="sidebar-link" href="{{URL::to('/admin/product')}}">
               <i class="align-middle" data-feather="box"></i>
               <span class="align-middle">Sản phẩm</span>

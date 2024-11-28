@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Gallery;
 use Illuminate\Support\ServiceProvider;
 
 use App\Repositories\IAdminRepository;
@@ -25,6 +26,9 @@ use App\Repositories\MemberRepository;
 use App\Repositories\IBannerRepository;
 use App\Repositories\BannerRepository;
 
+use App\Repositories\IGalleryRepository;
+use App\Repositories\GalleryRepository;
+
 use App\Repositories\IEvaluateRepository;
 use App\Repositories\EvaluateRepository;
 
@@ -42,6 +46,7 @@ class AppServiceProvider extends ServiceProvider
        $this->app->bind(IOrderRepository::class, OrderRepository::class);
        $this->app->bind(IMemberRepository::class, MemberRepository::class);
        $this->app->bind(IBannerRepository::class, BannerRepository::class);
+       $this->app->bind(IGalleryRepository::class, GalleryRepository::class);
        $this->app->bind(IEvaluateRepository::class, EvaluateRepository::class);
     }
 

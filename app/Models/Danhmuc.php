@@ -4,16 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * @property int    $id_danhmuc
- * @property int    $id_danhmuc
- * @property int    $id_danhmuc
- * @property int    $id_danhmuc
- * @property string $ten_danhmuc
- * @property string $ten_danhmuc
- * @property string $ten_danhmuc
- * @property string $ten_danhmuc
- */
 class Danhmuc extends Model
 {
     /**
@@ -40,43 +30,19 @@ class Danhmuc extends Model
     ];
 
     /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        
-    ];
-
-    /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'id_danhmuc' => 'int', 
-        'ten_danhmuc' => 'string', 
-    ];
-
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = [
-        
-    ];
-
-    /**
      * Indicates if the model should be timestamped.
      *
      * @var boolean
      */
     public $timestamps = false;
 
-    // Scopes...
+    /**
+     * Relationships
+     */
 
-    // Functions ...
-
-    // Relations ...
+    // Định nghĩa mối quan hệ hasMany tới bảng `sanpham`
+    public function sanphams()
+    {
+        return $this->hasMany(Sanpham::class, 'id_danhmuc', 'id_danhmuc');
+    }
 }

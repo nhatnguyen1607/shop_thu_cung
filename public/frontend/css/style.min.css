@@ -497,180 +497,82 @@ i.fa.fa-chevron-right.next.slick-arrow2 {
     opacity: 1;
 }
 
-
-
-.prev3 {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    z-index: 1;
-    line-height: 80px;
-    text-align: center;
-    color: rgb(88 85 85 / 50%);
-    font-size: 30px;
-    opacity: 0.7;
-}
-.next3 {
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    z-index: 1;
-    line-height: 80px;
-    text-align: center;
-    color: rgb(88 85 85 / 50%);
-    font-size: 30px;
-    opacity: 0.7;
-}
-.prev3:hover,
-.next3:hover {
-    cursor: pointer;
-    opacity: 1;
-}
-.post-slider3 {
-    position: relative;
-}
-.post-wrapper3 {
+.gallery {
+    background: #f4f4f4;
+    width: 90%;
     margin: 0 auto;
-    overflow: hidden;
-    padding-top: 9px;
-    padding-left: 4px;
-    padding-right: 6px;
-    padding-bottom: 5px;
+    padding: 20px 0;
+    border-radius: 10px;
 }
 
+button {
+    outline: none !important;
+}
 
+.gallery .owl-stage {
+    margin: 15px 0;
+    display: flex;
+    display: -webkit-flex;
+}
 
-.post-slider4 {
+.gallery .item {
+    margin: 0 15px;
+    width: 320px;
+    height: 400px;
+    display: flex;
+    display: -webkit-flex;
+    align-items: flex-end;
+    -webkit-align-items: flex-end;
+    background: #343434 no-repeat center center / cover;
+    border-radius: 16px;
+    overflow: hidden;
     position: relative;
-}
-.post-wrapper4 {
-    margin: 0 auto;
-    overflow: hidden;
-    padding-top: 9px;
-    padding-left: 4px;
-    padding-right: 6px;
-    padding-bottom: 5px;
-}
-.prev4 {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    z-index: 1;
-    line-height: 80px;
-    text-align: center;
-    color: rgb(88 85 85 / 50%);
-    font-size: 30px;
-    opacity: 0.7;
-}
-.next4 {
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    z-index: 1;
-    line-height: 80px;
-    text-align: center;
-    color: rgb(88 85 85 / 50%);
-    font-size: 30px;
-    opacity: 0.7;
-}
-.prev4:hover,
-.next4:hover {
+    transition: all 0.4s ease-in-out;
+    -webkit-transition: all 0.4s ease-in-out;
     cursor: pointer;
-    opacity: 1;
 }
 
-
-
-.post-slider5 {
-    position: relative;
+.gallery .item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
 }
-.post-wrapper5 {
-    margin: 0 auto;
-    overflow: hidden;
-    padding-top: 9px;
-    padding-left: 4px;
-    padding-right: 6px;
-    padding-bottom: 5px;
+
+.gallery .item.active {
+    width: 500px;
+    box-shadow: 12px 40px 40px rgba(0, 0, 0, 0.25);
+    -webkit-box-shadow: 12px 40px 40px rgba(0, 0, 0, 0.25);
 }
-.prev5 {
+
+.gallery .item:after {
+    content: "";
+    display: block;
     position: absolute;
-    top: 50%;
+    height: 100%;
+    width: 100%;
     left: 0;
-    transform: translateY(-50%);
-    z-index: 1;
-    line-height: 80px;
-    text-align: center;
-    color: rgb(88 85 85 / 50%);
-    font-size: 30px;
-    opacity: 0.7;
-}
-.next5 {
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    z-index: 1;
-    line-height: 80px;
-    text-align: center;
-    color: rgb(88 85 85 / 50%);
-    font-size: 30px;
-    opacity: 0.7;
-}
-.prev5:hover,
-.next5:hover {
-    cursor: pointer;
-    opacity: 1;
+    top: 0;
+    background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.25));
 }
 
-
-
-.post-slider6 {
-    position: relative;
-}
-.post-wrapper6 {
-    margin: 0 auto;
-    overflow: hidden;
-    padding-top: 9px;
-    padding-left: 4px;
-    padding-right: 6px;
-    padding-bottom: 5px;
-}
-.prev6 {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    z-index: 1;
-    line-height: 80px;
-    text-align: center;
-    color: rgb(88 85 85 / 50%);
-    font-size: 30px;
-    opacity: 0.7;
-}
-.next6 {
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    z-index: 1;
-    line-height: 80px;
-    text-align: center;
-    color: rgb(88 85 85 / 50%);
-    font-size: 30px;
-    opacity: 0.7;
-}
-.prev6:hover,
-.next6:hover {
-    cursor: pointer;
-    opacity: 1;
+.gallery .owl-theme.custom-carousel .owl-dots {
+    margin-top: 10px;
 }
 
+.gallery .owl-theme .owl-dots .owl-dot span {
+    width: 12px;
+    height: 12px;
+    background: #888;
+    border-radius: 50%;
+    transition: background 0.3s ease;
+}
+
+.gallery .owl-theme .owl-dots .owl-dot.active span {
+    background: #ff4500;
+}
 .body {
-    width: 70%;
+    width: 80%;
     padding: 10px 0;
     margin: 20px auto;
     background: #fff;
@@ -681,8 +583,8 @@ i.fa.fa-chevron-right.next.slick-arrow2 {
     min-height: 50vh;
 }
 .body__mainTitle {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
     margin-bottom: 20px;
     align-items: center;
     flex-wrap: wrap;
@@ -715,27 +617,27 @@ i.fa.fa-chevron-right.next.slick-arrow2 {
     margin-left: -10px;
     margin-right: -10px;
 }
-/* Định dạng cơ bản cho phần sản phẩm */
+
 .product {
     position: relative;
     overflow: hidden;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    display: flex; /* Sử dụng flexbox để căn chỉnh các phần tử bên trong */
-    flex-direction: column; /* Đặt chiều dọc cho các phần tử */
-    height: 100%; /* Đảm bảo chiều cao của khối sản phẩm là 100% */
+    display: flex; 
+    flex-direction: column; 
+    height: 100%; 
 }
 .product__img {
-    width: 100%; /* Chiều rộng bằng 100% khối sản phẩm */
-    height: 200px; /* Chiều cao cố định cho hình ảnh */
-    overflow: hidden; /* Ẩn phần hình ảnh vượt quá chiều cao */
+    width: 100%; 
+    height: 200px; 
+    overflow: hidden;
 }
 
 .product__img img {
-    width: 100%; /* Chiều rộng hình ảnh bằng 100% */
-    height: 100%; /* Chiều cao hình ảnh bằng 100% */
-    object-fit: cover; /* Đảm bảo hình ảnh đầy đủ trong khung mà không bị biến dạng */
-    display: block; /* Đảm bảo hình ảnh không có khoảng trống bên dưới */
+    width: 100%; 
+    height: 100%;
+    object-fit: cover; 
+    display: block; 
 }
 
 /* Định dạng cho phần thông báo sản phẩm mới */

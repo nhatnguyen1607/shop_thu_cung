@@ -1,126 +1,80 @@
 @extends('layout')
 @section('content')
-<!-- Con giống -->
+<style>
+
+.body {
+    text-align: center;
+    padding: 20px; 
+}
+
+.image-container {
+    display: flex;
+    justify-content: center; 
+    gap: 40px; 
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+.image-wrapper {
+    position: relative; 
+    display: inline-block;
+    width: 45%; 
+    max-width: 400px; 
+}
+
+.image-wrapper img {
+    width: 100%; 
+    height: auto; 
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.image-text {
+    font-size: 40px; 
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 24px;
+    color: white;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
+    padding: 5px 10px; 
+    border-radius: 5px; 
+}
+
+
+.image-wrapper:hover .image-text {
+    background-color: rgba(0, 0, 0, 0.8); 
+    opacity: 1; 
+}
+.image-wrapper:hover{
+    transform: scale(1.1); 
+    transition: transform 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .image-wrapper img {
+        width: 90%;
+        height: 90%;
+    }
+
+    .image-text {
+        font-size: 18px; 
+    }
+}
+
+</style>
 <div class="body">
-
-    <div class="body__mainTitle d-flex align-items-center" id="tc">
-        <h2>Thú cưng</h2>
-        <b>
-            <div class="d-flex justify-content-center align-items-center ml-5" style="font-size: 26px;">
-                <div id="clickDog" class="text-secondary activeColor mr-3">Chó</div>
-                <div id="clickCat" class="text-secondary mr-3">Mèo</div>
-            </div>
-        </b>
-
+    <div class="image-container">
+        <a href="{{route('cho')}}" class="image-wrapper">
+            <img src="{{asset('frontend/img/cho.png')}}" alt="Chó">
+            <div class="image-text">Chó</div>
+        </a>
+        <a href="{{route('meo')}}" class="image-wrapper">
+            <img src="{{asset('frontend/img/meo.jpg')}}" alt="Mèo">
+            <div class="image-text">Mèo</div>
+        </a>
     </div>
-    <div class="dog active">
-        <div class="post-slider5">
-            <i class="fa fa-chevron-left prev5" aria-hidden="true"></i>
-            <i class="fa fa-chevron-right next5" aria-hidden="true"></i>
-
-            <div class="row">
-                <div class="post-wrapper5">
-                    @foreach($concho as $cho)
-                    <div class="col-lg-2_5 col-md-4 col-6 post2">
-                        <a href="{{ route('detail', ['id' => $cho->id_sanpham]) }}">
-                            <div class="product">
-                                <div class="product__img">
-                                    <img src="{{$cho->anhsp}}" alt="">
-                                </div>
-                                <div class="product__sale">
-                                    <div>
-                                        @if($cho->giamgia)
-                                        -{{$cho->giamgia}}%
-                                        @else Mới
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <div class="product__content">
-                                    <div class="product__title">
-                                        {{$cho->tensp}}
-                                    </div>
-
-                                    <div class="product__pride-oldPride">
-                                        <span class="Price">
-                                            <bdi>
-                                                {{ number_format($cho->giasp, 0, ',', '.') }}
-                                                <span class="currencySymbol">₫</span>
-                                            </bdi>
-                                        </span>
-                                    </div>
-
-                                    <div class="product__pride-newPride">
-                                        <span class="Price">
-                                            <bdi>
-                                                {{ number_format($cho->giakhuyenmai, 0, ',', '.') }}
-                                                <span class="currencySymbol">₫</span>
-                                            </bdi>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="cat">
-        <div class="post-slider6">
-            <i class="fa fa-chevron-left prev6" aria-hidden="true"></i>
-            <i class="fa fa-chevron-right next6" aria-hidden="true"></i>
-
-            <div class="row">
-                <div class="post-wrapper6">
-                    @foreach($conmeo as $meo)
-                    <div class="col-lg-2_5 col-md-4 col-6 post2">
-                        <a href="{{ route('detail', ['id' => $meo->id_sanpham]) }}">
-                            <div class="product">
-                                <div class="product__img">
-                                    <img src="{{$meo->anhsp}}" alt="">
-                                </div>
-                                <div class="product__sale">
-                                    <div>
-                                        @if($meo->giamgia)
-                                        -{{$meo->giamgia}}%
-                                        @else Mới
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <div class="product__content">
-                                    <div class="product__title">
-                                        {{$meo->tensp}}
-                                    </div>
-
-                                    <div class="product__pride-oldPride">
-                                        <span class="Price">
-                                            <bdi>
-                                                {{ number_format($meo->giasp, 0, ',', '.') }}
-                                                <span class="currencySymbol">₫</span>
-                                            </bdi>
-                                        </span>
-                                    </div>
-
-                                    <div class="product__pride-newPride">
-                                        <span class="Price">
-                                            <bdi>
-                                                {{ number_format($meo->giakhuyenmai, 0, ',', '.') }}
-                                                <span class="currencySymbol">₫</span>
-                                            </bdi>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-    </div>
-
 </div>
 @endsection

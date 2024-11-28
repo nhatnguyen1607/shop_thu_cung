@@ -16,14 +16,18 @@ use Illuminate\Support\Facades\Auth;
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script> -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ys0BKqQbCyeNhqpe/lNl1dhq2BJvB5J1T4WPEWb9qIEG1YFUS3G+R3czm+3RfJ72
 
-    <link rel="stylesheet" href="{{ asset('frontend/css/bsgrid.min.css') }}" />
+    <link rel=" stylesheet" href="{{ asset('frontend/css/bsgrid.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('frontend/css/style.min.css') }}" />
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
+    <style>
 
+    </style>
 </head>
 
 <body>
@@ -41,10 +45,10 @@ use Illuminate\Support\Facades\Auth;
                         <li><a href="{{ URL::to('/')}}">Trang chủ</a></li>
                         <li><a href="{{ URL::to('/thucung')}}">Thú cưng</a></li>
                         <li>
-                            <a href="{{ URL::to('/services')}}">Dịch vụ</a>
+                            <a href="{{ URL::to('/donhang')}}">Đơn hàng</a>
                         </li>
                         <li>
-                            <a href="{{ URL::to('/donhang')}}">Đơn hàng</a>
+                            <a href="{{ URL::to('profile')}}">Tài khoản</a>
                         </li>
                     </ul>
                 </div>
@@ -62,7 +66,7 @@ use Illuminate\Support\Facades\Auth;
                 @if (Auth::check())
                 <?php $user = Auth::user(); ?>
                 <?php $khachhang = Khachhang::where('idtaikhoan', $user->idtaikhoan)->first(); ?>
-                <a href="{{ URL::to('profile') }}"><i class='fas fa-address-card fa-lg' style="color:black; margin-right: 10px;"></i></a>
+                <span class="mr-2" style="font-size: 14px;">{{$khachhang->hoten}}</span>
                 <div class="logout">
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
@@ -79,18 +83,16 @@ use Illuminate\Support\Facades\Auth;
                 <!-- Giỏ hàng -->
                 <a href="{{ route('cart') }}" class="navbar__shoppingCart">
                     <img src="{{ asset('frontend/img/shopping-cart.svg') }}" style="width: 24px;" alt="Giỏ hàng">
-
-                    <!-- Hiển thị số lượng sản phẩm trong giỏ hàng -->
                     @php
-                    $cartCount = 0; 
-                    if (Auth::check()) { 
+                    $cartCount = 0;
+                    if (Auth::check()) {
                     $khachhangId = $khachhang->id_kh;
                     $cartCount = DB::table('giohang')
                     ->where('khachhang_id', $khachhangId)
-                    ->count(); // Đếm số sản phẩm trong giỏ hàng
+                    ->count();
                     }
                     @endphp
-                    <span>{{ $cartCount }}</span> <!-- Hiển thị số lượng sản phẩm -->
+                    <span>{{ $cartCount }}</span> 
                 </a>
 
             </div>
@@ -157,163 +159,41 @@ use Illuminate\Support\Facades\Auth;
             });
 
 
-            // Slick mutiple carousel
-            $('.post-wrapper2').slick({
-                slidesToShow: 5,
-                slidesToScroll: 1,
-                autoplay: true,
-                autoplaySpeed: 1000,
-                prevArrow: $('.prev2'),
-                nextArrow: $('.next2'),
-                responsive: [{
-                        breakpoint: 1024,
-                        settings: {
-                            slidesToShow: 4,
-                            slidesToScroll: 3,
-                            infinite: true,
+            // Slick multiple carousel
+            $('.post-wrapper2').each(function() {
+                $(this).slick({
+                    slidesToShow: 5,
+                    slidesToScroll: 1,
+                    autoplay: true,
+                    autoplaySpeed: 1000,
+                    prevArrow: $(this).closest('.post-slider2').find('.prev2'),
+                    nextArrow: $(this).closest('.post-slider2').find('.next2'),
+                    responsive: [{
+                            breakpoint: 1024,
+                            settings: {
+                                slidesToShow: 4,
+                                slidesToScroll: 3,
+                                infinite: true,
+                            }
+                        },
+                        {
+                            breakpoint: 600,
+                            settings: {
+                                slidesToShow: 3,
+                                slidesToScroll: 2
+                            }
+                        },
+                        {
+                            breakpoint: 480,
+                            settings: {
+                                slidesToShow: 2,
+                                slidesToScroll: 1
+                            }
                         }
-                    },
-                    {
-                        breakpoint: 600,
-                        settings: {
-                            slidesToShow: 3,
-                            slidesToScroll: 2
-                        }
-                    },
-                    {
-                        breakpoint: 480,
-                        settings: {
-                            slidesToShow: 2,
-                            slidesToScroll: 1
-                        }
-                    }
-                ]
-            });
-            $('.post-wrapper3').slick({
-                slidesToShow: 4,
-                slidesToScroll: 1,
-                autoplay: true,
-                autoplaySpeed: 2000,
-                prevArrow: $('.prev3'),
-                nextArrow: $('.next3'),
-                responsive: [{
-                        breakpoint: 1024,
-                        settings: {
-                            slidesToShow: 4,
-                            slidesToScroll: 3,
-                            infinite: true,
-                        }
-                    },
-                    {
-                        breakpoint: 600,
-                        settings: {
-                            slidesToShow: 3,
-                            slidesToScroll: 2
-                        }
-                    },
-                    {
-                        breakpoint: 480,
-                        settings: {
-                            slidesToShow: 2,
-                            slidesToScroll: 1
-                        }
-                    }
-                ]
+                    ]
+                });
             });
 
-            $('.post-wrapper4').slick({
-                slidesToShow: 4,
-                slidesToScroll: 1,
-                autoplay: true,
-                autoplaySpeed: 2000,
-                prevArrow: $('.prev4'),
-                nextArrow: $('.next4'),
-                responsive: [{
-                        breakpoint: 1024,
-                        settings: {
-                            slidesToShow: 4,
-                            slidesToScroll: 3,
-                            infinite: true,
-                        }
-                    },
-                    {
-                        breakpoint: 600,
-                        settings: {
-                            slidesToShow: 3,
-                            slidesToScroll: 2
-                        }
-                    },
-                    {
-                        breakpoint: 480,
-                        settings: {
-                            slidesToShow: 2,
-                            slidesToScroll: 1
-                        }
-                    }
-                ]
-            });
-            $('.post-wrapper5').slick({
-                slidesToShow: 4,
-                slidesToScroll: 1,
-                autoplay: true,
-                autoplaySpeed: 1900,
-                prevArrow: $('.prev5'),
-                nextArrow: $('.next5'),
-                responsive: [{
-                        breakpoint: 1024,
-                        settings: {
-                            slidesToShow: 4,
-                            slidesToScroll: 3,
-                            infinite: true,
-                        }
-                    },
-                    {
-                        breakpoint: 600,
-                        settings: {
-                            slidesToShow: 3,
-                            slidesToScroll: 2
-                        }
-                    },
-                    {
-                        breakpoint: 480,
-                        settings: {
-                            slidesToShow: 2,
-                            slidesToScroll: 1
-                        }
-                    }
-                ]
-            });
-            $('.post-wrapper6').slick({
-                slidesToShow: 4,
-                slidesToScroll: 1,
-                autoplay: true,
-                autoplaySpeed: 1900,
-                prevArrow: $('.prev6'),
-                nextArrow: $('.next6'),
-                responsive: [{
-                        breakpoint: 1024,
-                        settings: {
-                            slidesToShow: 4,
-                            slidesToScroll: 3,
-                            infinite: true,
-                        }
-                    },
-                    {
-                        breakpoint: 600,
-                        settings: {
-                            slidesToShow: 3,
-                            slidesToScroll: 2
-                        }
-                    },
-                    {
-                        breakpoint: 480,
-                        settings: {
-                            slidesToShow: 2,
-                            slidesToScroll: 1
-                        }
-                    }
-                ]
-            });
         });
     </script>
     <script src="{{ asset('frontend/script/script.js') }}"></script>

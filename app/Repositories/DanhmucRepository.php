@@ -7,7 +7,7 @@ use App\Models\Danhmuc;
 class DanhmucRepository implements IDanhmucRepository{
 
     public function allDanhmuc(){
-        return Danhmuc::all();
+        return Danhmuc::with('sanphams')->get();
     }
     public function storeDanhmuc($data){
         Danhmuc::create($data);

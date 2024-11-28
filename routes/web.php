@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\{
-    AdminController, BannerController, ProductController, DanhmucController, OrderController, MemberController 
+    AdminController, BannerController,GalleryController, ProductController, DanhmucController, OrderController, MemberController 
 };
 use App\Http\Controllers\{
     HomeController,
@@ -34,6 +34,8 @@ Route::get('/viewAll', [HomeController::class, 'viewAll'])->name('viewAll');
 Route::get('/services', [HomeController::class, 'services'])->name('services');
 Route::get('/profile',[AccountController::class, 'index'])->name('profile');
 Route::put('/profile',[AccountController::class, 'update'])->name('profile.update');
+Route::get('/cho',[HomeController::class, 'cho'])->name('cho');
+Route::get('/meo',[HomeController::class, 'meo'])->name('meo');
 // Cart Routes
 Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'cart'])->name('cart');
@@ -101,6 +103,15 @@ Route::prefix('admin')->group(function () {
         Route::get('edit/{banner}', [BannerController::class, 'edit'])->name('banner.edit');
         Route::put('update/{banner}', [BannerController::class, 'update'])->name('banner.update');
         Route::delete('{banner}/delete', [BannerController::class, 'delete'])->name('banner.delete');
+    });
+    
+    Route::prefix('gallery')->group(function () {
+        Route::get('/', [GalleryController::class, 'index'])->name('gallery.index');
+        Route::get('create', [GalleryController::class, 'create'])->name('gallery.create');
+        Route::post('/', [GalleryController::class, 'store'])->name('gallery.store');
+        Route::get('edit/{gallery}', [GalleryController::class, 'edit'])->name('gallery.edit');
+        Route::put('update/{gallery}', [GalleryController::class, 'update'])->name('gallery.update');
+        Route::delete('{gallery}/delete', [GalleryController::class, 'delete'])->name('gallery.delete');
     });
     
     // Danh Muc Routes

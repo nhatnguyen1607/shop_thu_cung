@@ -5,9 +5,6 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Repositories\IBannerRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\TaiKhoan;
-use App\Models\Banner;
 
 class BannerController extends Controller
 {
