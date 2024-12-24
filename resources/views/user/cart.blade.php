@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 @section('content')
 
 <style>
-    /* Styles for quantity input and buttons */
     .quantity-input {
         display: flex;
         align-items: center;
@@ -45,18 +44,27 @@ use Illuminate\Support\Facades\Auth;
 </style>
 
 <div class="body">
-
-    @if(session('success'))
-    <div class="alert alert-success mt-3">
-        {{ session('success') }}
+    @if(Session::has('error'))
+    <div id="errorMessage" class="alert alert-danger" role="alert">
+        {{ Session::pull('error') }}
     </div>
-    @endif
-    @if(session('error'))
-    <div class="alert alert-danger mt-3">
-        {{ session('error') }}
-    </div>
+    <script>
+        setTimeout(function() {
+            document.getElementById('errorMessage').style.display = 'none';
+        }, 2000);
+    </script>
     @endif
 
+    @if(Session::has('success'))
+    <div id="successMessage" class="alert alert-success" role="alert">
+        {{ Session::pull('success') }}
+    </div>
+    <script>
+        setTimeout(function() {
+            document.getElementById('successMessage').style.display = 'none';
+        }, 2000);
+    </script>
+    @endif
     <table id="cart" class="table table-hover table-condensed">
         <thead>
             <tr>
@@ -71,20 +79,6 @@ use Illuminate\Support\Facades\Auth;
         </thead>
         <tbody>
             @php $total = 0; @endphp
-
-            <!-- Lấy giỏ hàng của người dùng đăng nhập -->
-            @php
-            $user = Auth::user();
-            $khachhang = Khachhang::where('idtaikhoan', $user->idtaikhoan)->first();
-            $userId =$khachhang->id_kh; // Lấy ID người dùng đã đăng nhập
-            $cartItems = \DB::table('giohang')
-            ->join('sanpham', 'giohang.sanpham_id', '=', 'sanpham.id_sanpham')
-            ->select('giohang.*', 'sanpham.tensp', 'sanpham.giasp', 'sanpham.anhsp', 'sanpham.giamgia', 'sanpham.giakhuyenmai')
-            ->where('giohang.khachhang_id', $userId)
-            ->get();
-            @endphp
-
-
             @if($cartItems->isNotEmpty())
             @foreach($cartItems as $item)
             @php $total += $item->giakhuyenmai * $item->quantity; @endphp
@@ -135,11 +129,11 @@ use Illuminate\Support\Facades\Auth;
             e.preventDefault();
             const row = this.closest('tr');
             const quantityInput = row.querySelector('.quantity-field');
-            let value = parseInt(quantityInput.value, 10); 
+            let value = parseInt(quantityInput.value, 10);
             if (value > 1) {
-                value--; 
-                quantityInput.value = value; 
-                updateCart(row, value); 
+                value--;
+                quantityInput.value = value;
+                updateCart(row, value);
             }
         });
     });
@@ -149,10 +143,10 @@ use Illuminate\Support\Facades\Auth;
             e.preventDefault();
             const row = this.closest('tr');
             const quantityInput = row.querySelector('.quantity-field');
-            let value = parseInt(quantityInput.value, 10); 
-            value++; 
+            let value = parseInt(quantityInput.value, 10);
+            value++;
             quantityInput.value = value;
-            updateCart(row, value); 
+            updateCart(row, value);
         });
     });
 

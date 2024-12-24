@@ -87,32 +87,7 @@
               <span class="align-middle">Thành viên</span>
             </a>
           </li>
-
-          <!-- <li class="sidebar-header">Tools & Components</li>
-        
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="ui-forms.html">
-                    <i class="align-middle" data-feather="check-square"></i>
-                    <span class="align-middle">Forms</span>
-                </a>
-            </li>
-        
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="icons-feather.html">
-                    <i class="align-middle" data-feather="coffee"></i>
-                    <span class="align-middle">Icons</span>
-                </a>
-            </li>
-        
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="ui-buttons.html">
-                    <i class="align-middle" data-feather="coffee"></i>
-                    <span class="align-middle">Button</span>
-                </a>
-            </li> -->
         </ul>
-
-
       </div>
     </nav>
 
@@ -126,7 +101,6 @@
           <ul class="navbar-nav navbar-align">
 
             <li class="nav-item dropdown">
-
               <a
                 class="nav-link dropdown-toggle d-none d-sm-inline-block"
                 href="#"
@@ -167,45 +141,8 @@
                   href="https://Admin Dashboard.io/"
                   target="_blank"><strong>Admin Dashboard</strong></a>
 
-
               </p>
             </div>
-            <!-- <div class="col-6 text-end">
-                <ul class="list-inline">
-                  <li class="list-inline-item">
-                    <a
-                      class="text-muted"
-                      href="https://Admin Dashboard.io/"
-                      target="_blank"
-                      >Support</a
-                    >
-                  </li>
-                  <li class="list-inline-item">
-                    <a
-                      class="text-muted"
-                      href="https://Admin Dashboard.io/"
-                      target="_blank"
-                      >Help Center</a
-                    >
-                  </li>
-                  <li class="list-inline-item">
-                    <a
-                      class="text-muted"
-                      href="https://Admin Dashboard.io/"
-                      target="_blank"
-                      >Privacy</a
-                    >
-                  </li>
-                  <li class="list-inline-item">
-                    <a
-                      class="text-muted"
-                      href="https://Admin Dashboard.io/"
-                      target="_blank"
-                      >Terms</a
-                    >
-                  </li>
-                </ul>
-              </div> -->
           </div>
         </div>
       </footer>

@@ -2,7 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\{
-    AdminController, BannerController,GalleryController, ProductController, DanhmucController, OrderController, MemberController 
+    AdminController,
+    BannerController,
+    GalleryController,
+    ProductController,
+    DanhmucController,
+    OrderController,
+    MemberController
 };
 use App\Http\Controllers\{
     HomeController,
@@ -11,7 +17,7 @@ use App\Http\Controllers\{
     OrdersController,
     OrderViewController,
     CartController,
-    ForgotPasswordController, 
+    ForgotPasswordController,
     ResetPasswordController,
     EvaluateController
 };
@@ -32,10 +38,14 @@ Route::get('/thucung', [HomeController::class, 'thucung']);
 Route::get('/search', [HomeController::class, 'search'])->name('search');
 Route::get('/viewAll', [HomeController::class, 'viewAll'])->name('viewAll');
 Route::get('/services', [HomeController::class, 'services'])->name('services');
-Route::get('/profile',[AccountController::class, 'index'])->name('profile');
-Route::put('/profile',[AccountController::class, 'update'])->name('profile.update');
-Route::get('/cho',[HomeController::class, 'cho'])->name('cho');
-Route::get('/meo',[HomeController::class, 'meo'])->name('meo');
+Route::get('/profile', [AccountController::class, 'index'])->name('profile');
+Route::put('/profile', [AccountController::class, 'update'])->name('profile.update');
+Route::get('/cho', [HomeController::class, 'cho'])->name('cho');
+Route::get('/meo', [HomeController::class, 'meo'])->name('meo');
+
+//Evaluate
+Route::get('/evaluate/filter', [EvaluateController::class, 'filter'])->name('evaluate.filter');
+
 // Cart Routes
 Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'cart'])->name('cart');
@@ -88,8 +98,8 @@ Route::prefix('admin')->group(function () {
     // Product Routes
     Route::prefix('product')->group(function () {
         Route::get('/', [ProductController::class, 'index'])->name('product.index');
-        Route::get('search', [AdminController::class, 'search'])->name('adminSearch');
         Route::get('create', [ProductController::class, 'create'])->name('product.create');
+        Route::get('search', [ProductController::class, 'search'])->name('productSearch');
         Route::post('/', [ProductController::class, 'store'])->name('product.store');
         Route::get('edit/{product}', [ProductController::class, 'edit'])->name('product.edit');
         Route::put('update/{product}', [ProductController::class, 'update'])->name('product.update');
@@ -104,7 +114,7 @@ Route::prefix('admin')->group(function () {
         Route::put('update/{banner}', [BannerController::class, 'update'])->name('banner.update');
         Route::delete('{banner}/delete', [BannerController::class, 'delete'])->name('banner.delete');
     });
-    
+
     Route::prefix('gallery')->group(function () {
         Route::get('/', [GalleryController::class, 'index'])->name('gallery.index');
         Route::get('create', [GalleryController::class, 'create'])->name('gallery.create');
@@ -113,7 +123,7 @@ Route::prefix('admin')->group(function () {
         Route::put('update/{gallery}', [GalleryController::class, 'update'])->name('gallery.update');
         Route::delete('{gallery}/delete', [GalleryController::class, 'delete'])->name('gallery.delete');
     });
-    
+
     // Danh Muc Routes
     Route::prefix('danhmuc')->group(function () {
         Route::get('/', [DanhmucController::class, 'index'])->name('danhmuc.index');

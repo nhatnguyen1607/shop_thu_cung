@@ -1,6 +1,5 @@
 @extends('layout')
 @section('content')
-<!-- Tất cả sản phẩm -->
 <div class="body">
 
     <div class="body__mainTitle">
@@ -14,13 +13,14 @@
                 <a href="{{ route('detail', ['id' => $search->id_sanpham]) }}">
                     <div class="product">
                         <div class="product__img">
-                            <img src="{{$search->anhsp}}" alt="">
+                            <img src="{{$search->anhSP->first()->anh_sp}}" alt="">
                         </div>
                         <div class="product__sale">
                             <div>
-                                @if($search->giamgia)
+                                @if($search->soluong == 0)
+                                Hết hàng
+                                @elseif($search->giamgia)
                                 -{{$search->giamgia}}%
-                                @else Mới
                                 @endif
                             </div>
                         </div>

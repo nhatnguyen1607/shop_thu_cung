@@ -1,12 +1,19 @@
 @extends('layout')
 @section('content')
+
 <style>
     .reviews {
         margin-top: 20px;
     }
-    .button{
+
+    .product__cart-add {
+        text-decoration: none;
+    }
+
+    .button {
         margin-left: 3vw;
     }
+
     .review-item {
         margin-left: 3vw;
         margin-top: 3vw;
@@ -19,45 +26,96 @@
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        /* background-color: #ccc; */
         margin: 0 3vw;
     }
 
     .average-rating {
         flex: 1;
         max-width: 40%;
-        /* Đảm bảo phần average-rating không chiếm quá 40% chiều rộng */
     }
 
     .rating-details {
         flex: 1;
         max-width: 55%;
-        /* Đảm bảo phần rating-details không chiếm quá 55% chiều rộng */
     }
 
     .progress-bar {
         height: 8px;
         border-radius: 4px;
     }
+
+    .carousel-inner {
+        position: relative;
+        width: 100%;
+        height: 400px;
+        overflow: hidden;
+    }
+
+    .carousel-item.active {
+        opacity: 1;
+    }
+
+    .carousel-inner img {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        background-color: #ff4500 !important;
+    }
 </style>
 <!--Main-->
 <div class="body" style="padding-top: 50px;">
     <a class="buy_continute" href="{{URL::to('/')}}"><i class="fa fa-arrow-circle-left"></i> Trở lại mua hàng</a>
-    @if(session('success'))
-    <div class="alert alert-success mt-3">
-        {{ session('success') }}
+    @if(Session::has('error'))
+    <div id="errorMessage" class="alert alert-danger" role="alert">
+        {{ Session::pull('error') }}
     </div>
+    <script>
+        setTimeout(function() {
+            document.getElementById('errorMessage').style.display = 'none';
+        }, 2000);
+    </script>
     @endif
-    @if(session('error'))
-    <div class="alert alert-danger mt-3">
-        {{ session('error') }}
+
+    @if(Session::has('success'))
+    <div id="successMessage" class="alert alert-success" role="alert">
+        {{ Session::pull('success') }}
     </div>
+    <script>
+        setTimeout(function() {
+            document.getElementById('successMessage').style.display = 'none';
+        }, 2000);
+    </script>
     @endif
     <div class="product_card mt-3">
         <div class="product__details-img mr-2">
-            <div class="big-img">
-                <img src="{{ asset($sanpham->anhsp) }}" alt="" id="zoom" style="visibility: visible;">
+            <div id="productCarousel" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    @foreach($sanpham->anhSp as $key => $anhSP)
+                    <li data-target="#productCarousel" data-slide-to="{{ $key }}" class="{{ $key === 0 ? 'active' : '' }}"></li>
+                    @endforeach
+                </ol>
+                <div class="carousel-inner">
+                    @foreach($sanpham->anhSp as $key => $anhSP)
+                    <div class="carousel-item {{ $key === 0 ? 'active' : '' }}">
+                        <img src="{{ asset($anhSP->anh_sp) }}" class="d-block w-100" alt="Ảnh {{ $key + 1 }}">
+                    </div>
+                    @endforeach
+                </div>
+                <a class="carousel-control-prev" href="#productCarousel" role="button" data-slide="prev" style="color: #ff4500 !important;">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#productCarousel" role="button" data-slide="next" style="color: #ff4500 !important;">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
             </div>
+
+
         </div>
 
         <div class="product__details-info">
@@ -96,7 +154,8 @@
                 </div>
 
                 <div class="product__cart">
-                    <a href="{{ route('add_to_cart', $sanpham->id_sanpham) }}" class="product__cart-add" name="add-to-cart">
+                    <a href="{{ route('add_to_cart', $sanpham->id_sanpham) }}" class="product__cart-add"
+                        name="add-to-cart">
                         Thêm vào giỏ hàng
                     </a>
                     <a href="{{ route('order', $sanpham->id_sanpham) }}" class="product__cart-buy" name="buy-now">Mua ngay</a>
@@ -119,12 +178,14 @@
                 <strong style="margin-left:1vw;">{{ number_format($averageRating, 1) }}</strong> / 5
                 <div>
                     @for ($i = 1; $i <= 5; $i++)
-                        @if ($i <=$averageRating)
+                        @if ($i <=floor($averageRating)) 
                         <span style="color: gold">&#9733;</span>
-                        @else
+                        @elseif ($i == ceil($averageRating) && $averageRating - floor($averageRating) >= 0.5) 
+                        <span style="color: gold">&#9733;</span>
+                        @else 
                         <span style="color: #ccc;">&#9733;</span>
                         @endif
-                        @endfor
+                    @endfor
                         <span>({{ $totalReviews }} lượt đánh giá.)</span>
                 </div>
                 <!-- <p>{{ $totalReviews }} lượt đánh giá</p> -->
@@ -147,54 +208,50 @@
         </div>
         <br>
         <div class="button">
-            <button class="badge rounded-pill bg-primary" style="color: white; width:50px;border:none;">All</button>
-            <button class="badge rounded-pill bg-success" style="color: white; width:50px;border:none;" data-rating="5">5 <span style="color: gold;">&#9733;</span> </button>
-            <button class="badge rounded-pill bg-success" style="color: white; width:50px;border:none;" data-rating="4">4 <span style="color: gold;">&#9733;</span> </button>
-            <button class="badge rounded-pill bg-warning" style="color: white; width:50px;border:none;" data-rating="3">3 <span style="color: gold;">&#9733;</span> </button>
-            <button class="badge rounded-pill bg-danger" style="color: white; width:50px;border:none;" data-rating="2">2 <span style="color: gold;">&#9733;</span> </button>
-            <button class="badge rounded-pill bg-danger" style="color: white; width:50px;border:none;" data-rating="1">1 <span style="color: gold;">&#9733;</span> </button>
+            <button class="badge rounded-pill bg-primary filter-rating" style="color: white; width:50px;border:none;"
+                data-rating="all">All</button>
+            <button class="badge rounded-pill bg-success filter-rating" style="color: white; width:50px;border:none;"
+                data-rating="5">5 <span style="color: gold;">&#9733;</span></button>
+            <button class="badge rounded-pill bg-success filter-rating" style="color: white; width:50px;border:none;"
+                data-rating="4">4 <span style="color: gold;">&#9733;</span></button>
+            <button class="badge rounded-pill bg-warning filter-rating" style="color: white; width:50px;border:none;"
+                data-rating="3">3 <span style="color: gold;">&#9733;</span></button>
+            <button class="badge rounded-pill bg-danger filter-rating" style="color: white; width:50px;border:none;"
+                data-rating="2">2 <span style="color: gold;">&#9733;</span></button>
+            <button class="badge rounded-pill bg-danger filter-rating" style="color: white; width:50px;border:none;"
+                data-rating="1">1 <span style="color: gold;">&#9733;</span></button>
         </div>
-        @if($danhgias && !$danhgias->isEmpty())
-        @foreach($danhgias as $danhgia)
-        <div class="review-item" id="">
-            <div class="review-header">
-                <img src="{{ asset('frontend/img/6-anh-dai-dien-trang-inkythuatso-03-15-26-36.jpg') }}" alt="" style="height:30px; width:30px;">
-                <strong>{{ $danhgia->hoten }}</strong>
-                <div class="review-rating">
-                @if(isset($danhgia) && $danhgia->rating == 5)
-                <span class="badge rounded-pill bg-success" style="color: white;">Rất tốt</span>
-                @elseif($danhgia->rating == 4)
-                <span class="badge rounded-pill bg-success" style="color: white;">Tốt</span>
-                @elseif($danhgia->rating == 3)
-                <span class="badge rounded-pill bg-warning" style="color: white;">Trung bình</span>
-                @elseif($danhgia->rating == 2)
-                <span class="badge rounded-pill bg-danger" style="color: white;">Tệ</span>
-                @elseif($danhgia->rating == 1)
-                <span class="badge rounded-pill bg-danger" style="color: white;">Rất tệ</span>
 
-                @endif
-
-                    @for ($i = 1; $i <= 5; $i++)
-                        @if ($i <=$danhgia->rating)
-                        <span style="color: gold;">&#9733;</span>
-                        @else
-                        <span style="color: #ccc;">&#9733;</span>
-                        @endif
-                        @endfor
-                </div>
-            </div>
-            <div class="review-content">
-                <p>{{ $danhgia->noidung }}</p>
-            </div>
-            <hr width="100%" style="display: block; margin: 0 auto;">
+        <div id="review-container">
+            @include('partials.reviews', ['danhgias' => $danhgias])
         </div>
-        @endforeach
-
-        @else
-        <p style="margin-left: 2vw;">Chưa có đánh giá cho sản phẩm này.</p>
-        @endif
-
     </div>
+    <script>
+        $(document).ready(function() {
+            $('.filter-rating').on('click', function() {
+                let rating = $(this).data('rating');
+                let id_sanpham = JSON.parse(@json($sanpham -> id_sanpham));
+                console.log("Rating được chọn: " + rating);
+
+                $.ajax({
+                    url: "{{ route('evaluate.filter') }}",
+                    method: 'GET',
+                    data: {
+                        rating: rating,
+                        id_sanpham: id_sanpham
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        $('#review-container').html(response);
+                    },
+                    error: function() {
+                        alert('Có lỗi xảy ra, vui lòng thử lại.');
+                    }
+                });
+            });
+        });
+    </script>
+
     <hr>
     <!-- Sản phẩm ngẫu nhiên -->
     <div class="body__mainTitle">
@@ -206,7 +263,7 @@
             <a href="{{ route('detail', ['id' => $random->id_sanpham]) }}">
                 <div class="product">
                     <div class="product__img">
-                        <img src="{{ asset($random->anhsp)}}" alt="">
+                        <img src="{{ asset($random->anhSp->first()->anh_sp)}}" alt="">
                     </div>
                     <div class="product__sale">
                         <div>
@@ -246,4 +303,5 @@
         @endforeach
     </div>
 </div>
+
 @endsection

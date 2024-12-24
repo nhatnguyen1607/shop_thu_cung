@@ -43,8 +43,7 @@ class AuthController extends Controller
             $khachhang->diachi = $request->address;
             $khachhang->sdt = $request->phone;
             $khachhang->save();
-
-            return view('user.auth.login')->with('message', 'Đăng ký tài khoản thành công');
+            return redirect()->route('login')->with('success', 'Đăng ký tài khoản thành công');
         } catch (\Exception $e) {
             return back()->with('error', 'Lỗi xảy ra: ' . $e->getMessage());
         }
@@ -60,18 +59,18 @@ class AuthController extends Controller
 
         if (Auth::attempt($credetials)) {
             $user = Auth::user();
-            $userId = $user->id;
-
             if ($user->trangthai === 'lock') {
                 Auth::logout();
                 return back()->with('error', 'Tài khoản của bạn bị khóa. Vui lòng liên hệ admin để xử lí!');
             }
-
-            $khachhang = Khachhang::where('idtaikhoan', $user->idtaikhoan)->first();
-            return redirect('/')->with('message', 'Đăng nhập thành công');
+            if ($user->id_phanquyen === 1) {
+                Auth::logout();
+                return back()->with('error', 'Tài khoản không hợp lệ!');
+            }
+            return redirect('/')->with('success', 'Đăng nhập thành công');
         }
 
-        return back()->with('error', 'Sai tên tài khoản hoặc mật khẩu');
+        return back()->with('error', 'Sai email hoặc mật khẩu');
     }
 
 

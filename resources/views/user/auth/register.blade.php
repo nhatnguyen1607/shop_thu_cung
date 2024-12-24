@@ -8,7 +8,8 @@
     }
 
     input.error {
-        border: 1px solid red; /* Viền đỏ cho ô nhập sai */
+        border: 1px solid red;
+        /* Viền đỏ cho ô nhập sai */
     }
 </style>
 
@@ -16,15 +17,26 @@
 <div class="login-form" style="height: unset !important; margin-top: -105px!important;">
     <div class="main" style="padding-top: 180px; padding-bottom: 15px; margin-bottom: 0;">
 
-        @if(Session::has('thongbao'))
-        <div class="alert alert-success" role="alert">
-            {{Session::get('thongbao')}}
-        </div>
-        @endif
         @if(Session::has('error'))
-        <div class="alert alert-danger" role="alert">
-            {{Session::pull('error')}}
+        <div id="errorMessage" class="alert alert-danger" role="alert">
+            {{ Session::pull('error') }}
         </div>
+        <script>
+            setTimeout(function() {
+                document.getElementById('errorMessage').style.display = 'none';
+            }, 2000);
+        </script>
+        @endif
+
+        @if(Session::has('success'))
+        <div id="successMessage" class="alert alert-success" role="alert">
+            {{ Session::pull('success') }}
+        </div>
+        <script>
+            setTimeout(function() {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 2000);
+        </script>
         @endif
 
         <form action="{{route('register')}}" method="POST" class="form" style="width: 400px;" id="form-1">
@@ -92,44 +104,41 @@
     </div>
 </div>
 <script>
- $(document).ready(function () {
-    // Thêm phương thức kiểm tra email tùy chỉnh
-    $.validator.methods.email = function (value, element) {
-        // Kiểm tra email với regex
-        return this.optional(element) || /^[\w\.]+\@\w+\.[a-zA-Z]{2,3}(\.[a-zA-Z]{2,3})?$/.test(value);
-    };
+    $(document).ready(function() {
+        // Thêm phương thức kiểm tra email tùy chỉnh
+        $.validator.methods.email = function(value, element) {
+            // Kiểm tra email với regex
+            return this.optional(element) || /^[\w\.]+\@\w+\.[a-zA-Z]{2,3}(\.[a-zA-Z]{2,3})?$/.test(value);
+        };
 
-    // Sử dụng validate cho form
-    $("#form-1").validate({
-        errorClass: "error-message", // Class CSS để tạo kiểu cho lỗi
-        rules: {
-            email: {
-                required: true,
-                email: true // Kiểm tra email đúng định dạng
+        $("#form-1").validate({
+            errorClass: "error-message",
+            rules: {
+                email: {
+                    required: true,
+                    email: true
+                },
+                password: {
+                    required: true,
+                    minlength: 6
+                }
             },
-            password: {
-                required: true,
-                minlength: 6 // Mật khẩu tối thiểu 6 ký tự
-            }
-        },
-        messages: {
-            email: {
-                required: "Vui lòng nhập email",
-                email: "Vui lòng nhập đúng định dạng email"
+            messages: {
+                email: {
+                    required: "Vui lòng nhập email",
+                    email: "Vui lòng nhập đúng định dạng email"
+                },
+                password: {
+                    required: "Vui lòng nhập mật khẩu",
+                    minlength: "Mật khẩu phải có ít nhất 6 ký tự"
+                }
             },
-            password: {
-                required: "Vui lòng nhập mật khẩu",
-                minlength: "Mật khẩu phải có ít nhất 6 ký tự"
+            errorPlacement: function(error, element) {
+                // Đặt thông báo lỗi ngay dưới input
+                error.insertAfter(element);
             }
-        },
-        errorPlacement: function (error, element) {
-            // Đặt thông báo lỗi ngay dưới input
-            error.insertAfter(element);
-        }
+        });
     });
-});
-
-
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>

@@ -18,32 +18,33 @@ class EvaluateController extends Controller
     {
         $this->evaluateRepository = $evaluateRepository;
     }
-
-    /**
-     * Hiển thị form đánh giá cho một đơn hàng.
-     */
     public function create($id_dathang)
     {
-        $user = Auth::user();
-        $dathang = Dathang::where('id_dathang', $id_dathang)->first();
         $chiTietDonHang = ChitietDonhang::where('id_dathang', $id_dathang)->first();
-
-        return view('user.danhgia', ['id_sanpham' => $chiTietDonHang->id_sanpham], ['id_kh' => $chiTietDonHang->id_kh]);
+        $sanpham = Sanpham::where('id_sanpham', $chiTietDonHang->id_sanpham)->first();
+        return view('user.danhgia', [
+            'id_sanpham' => $chiTietDonHang->id_sanpham,
+            'id_kh' => $chiTietDonHang->id_kh,
+            'tensp' => $chiTietDonHang->tensp,
+            'sanpham' => $sanpham
+        ]);
     }
 
-    /**
-     * Lưu đánh giá mới vào cơ sở dữ liệu.
-     */
     public function store(Request $request)
     {
         $request->validate([
             'noidung' => 'required|string',
             'rating' => 'required|integer|min:1|max:5',
         ]);
-        // Sử dụng repository để lưu đánh giá
         $this->evaluateRepository->create($request->only(['noidung', 'rating', 'id_sanpham', 'id_kh']));
 
-        return redirect('/')->with('message', 'Đánh giá của bạn đã được gửi thành công!');
+        return redirect('/')->with('success', 'Đánh giá của bạn đã được gửi thành công!');
     }
-
+    public function filter(Request $request)
+    {
+        $id_sanpham = $request->input('id_sanpham');
+        $rating = $request->input('rating') ?? 'all';
+        $danhgias = $this->evaluateRepository->filterReviews($id_sanpham, $rating);
+        return view('partials.reviews', ['danhgias' => $danhgias])->render();
+    }
 }

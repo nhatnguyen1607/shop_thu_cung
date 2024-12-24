@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\BannerRepository;
 use App\Repositories\IBannerRepository;
 use Illuminate\Http\Request;
 
@@ -44,7 +45,10 @@ class BannerController extends Controller
         return redirect()->route('banner.index')->with('success', 'Thêm banner thành công');
     }
     public function delete($id)
-    {
+    {   
+        $banner = $this->bannerRepository->findById($id);
+        $filePath = public_path($banner->anhbanner);
+        unlink($filePath);
         $this->bannerRepository->delete($id);
         return redirect()->route('banner.index')->with('success', 'Xóa banner thành công');
     }

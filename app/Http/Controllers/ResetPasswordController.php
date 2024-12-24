@@ -41,9 +41,11 @@ class ResetPasswordController extends Controller
 
         if ($message === Password::PASSWORD_RESET) {
             $message='Mật khẩu đã được thay đổi!';
-            return redirect()->route('login')->with(['message'=> __($message)]);
+            return redirect()->route('login')->with(['success'=> __($message)]);
         }
-
+        if ($message === Password::INVALID_TOKEN) {
+            return back()->withErrors(['token' => 'Mã khôi phục mật khẩu không hợp lệ. Vui lòng nhập đúng email']);
+        }
         return back()->withErrors(['email' => [__($message)]]);
     }
 }

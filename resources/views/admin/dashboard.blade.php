@@ -21,12 +21,6 @@
                   </div>
                 </div>
                 <h1 class="mt-1 mb-3">{{$totalsOrders}}</h1>
-                <div class="mb-0">
-                  <span class="text-danger">
-                    <i class="mdi mdi-arrow-bottom-right"></i> -2.25%
-                  </span>
-                  <span class="text-muted">Since last week</span>
-                </div>
               </div>
             </div>
           </div>
@@ -44,12 +38,6 @@
                   </div>
                 </div>
                 <h1 class="mt-1 mb-3">{{$totalsCustomer}}</h1>
-                <div class="mb-0">
-                  <span class="text-success">
-                    <i class="mdi mdi-arrow-bottom-right"></i> 5.25%
-                  </span>
-                  <span class="text-muted">Since last week</span>
-                </div>
               </div>
             </div>
           </div>
@@ -67,12 +55,6 @@
                   </div>
                 </div>
                 <h1 class="mt-1 mb-3">{{$totalsSaleProducts}}</h1>
-                <div class="mb-0">
-                  <span class="text-danger">
-                    <i class="mdi mdi-arrow-bottom-right"></i> -3.65%
-                  </span>
-                  <span class="text-muted">Since last week</span>
-                </div>
               </div>
             </div>
           </div>
@@ -89,13 +71,7 @@
                     </div>
                   </div>
                 </div>
-                <h1 class="mt-1 mb-3">{{$totalsMoney}}</h1>
-                <div class="mb-0">
-                  <span class="text-success">
-                    <i class="mdi mdi-arrow-bottom-right"></i> 6.65%
-                  </span>
-                  <span class="text-muted">Since last week</span>
-                </div>
+                <h1 class="mt-1 mb-3">{{ number_format($totalsMoney, 0, '.', ',') }}</h1>
               </div>
             </div>
           </div>
@@ -144,7 +120,8 @@
                 <span class="badge 
                       @if($order->trangthai == 'đang xử lý') bg-primary 
                       @elseif ($order->trangthai == 'chờ lấy hàng') bg-warning 
-                      @elseif ($order->trangthai == 'đang giao hàng' || $order->trangthai == 'giao thành công') bg-success 
+                      @elseif ($order->trangthai == 'đang giao hàng') bg-info
+                      @elseif ($order->trangthai == 'giao thành công') bg-success 
                       @else bg-danger @endif">
                   {{$order->trangthai}}
                 </span>

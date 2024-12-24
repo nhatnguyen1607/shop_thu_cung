@@ -8,24 +8,41 @@ use Illuminate\Support\Facades\Auth;
 @section('content')
 
 <style>
-    .container{
+    .container {
         margin-top: 4vw;
         margin-bottom: 2vw;
     }
+
     @media (max-width: 768px) {
-        .container{
+        .container {
             margin-top: 8vw;
         }
     }
 </style>
-@if(session('success'))
-<div class="alert alert-success mt-3">
-    {{ session('success') }}
+@if(Session::has('error'))
+<div id="errorMessage" class="alert alert-danger" role="alert">
+    {{ Session::pull('error') }}
 </div>
+<script>
+    setTimeout(function() {
+        document.getElementById('errorMessage').style.display = 'none';
+    }, 2000);
+</script>
+@endif
+
+@if(Session::has('success'))
+<div id="successMessage" class="alert alert-success" role="alert">
+    {{ Session::pull('success') }}
+</div>
+<script>
+    setTimeout(function() {
+        document.getElementById('successMessage').style.display = 'none';
+    }, 2000);
+</script>
 @endif
 <?php $user = Auth::user(); ?>
 <?php $khachhang = Khachhang::where('idtaikhoan', $user->idtaikhoan)->first(); ?>
-<div class="container" >
+<div class="container">
     <h2>Hồ sơ cá nhân</h2>
     <form action="{{route('profile.update')}}" method="post">
         @csrf
@@ -44,6 +61,7 @@ use Illuminate\Support\Facades\Auth;
             <textarea name="diachi" id="address" class="form-control" rows="3" required>{{$khachhang->diachi}}</textarea>
         </div>
         <button type="submit" class="btn btn-primary">Cập nhật</button>
+        <a class="btn btn-secondary" href="{{URL::to('/')}}">Quay lại</a>
     </form>
 </div>
 @endsection

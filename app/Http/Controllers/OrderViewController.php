@@ -15,11 +15,6 @@ class OrderViewController extends Controller
     {
         $this->orderRepository = $orderRepository;
     }
-    // public function index()
-    // {
-    //     $orders = DatHang::with('chiTietDonHang')->get();
-    //     return view('donhang.index', compact('orders'));
-    // }
     public function donhang()
     {
         $user = Auth::user();
@@ -27,8 +22,6 @@ class OrderViewController extends Controller
             return redirect('/login')->with('error', 'Bạn cần đăng nhập để xem đơn hàng.');
         }
         $khachhang = Khachhang::where('idtaikhoan', $user->idtaikhoan)->first();
-
-        // Lấy danh sách đơn hàng của người dùng
         $orders = $this->orderRepository->orderView($khachhang->id_kh);
         return view('user.order', ['orders' => $orders]);
     }
@@ -44,14 +37,14 @@ class OrderViewController extends Controller
         $khachhang = Khachhang::where('idtaikhoan', $user->idtaikhoan)->first();
         $taikhoan = $user;
         $orderdetails = $this->orderRepository->findDetailProduct($id);
-        $showuser = $this->orderRepository->findUser($order->id_kh); 
+        $showuser = $this->orderRepository->findUser($order->id_kh);
 
         return view('user.orderdetail', [
             'order' => $order,
             'orderdetails' => $orderdetails,
             'email' => $taikhoan->email,
-            'khachhang' => $khachhang ,
-            'taikhoan' => $taikhoan 
+            'khachhang' => $khachhang,
+            'taikhoan' => $taikhoan
         ]);
     }
 }

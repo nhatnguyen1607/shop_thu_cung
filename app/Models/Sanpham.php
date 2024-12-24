@@ -34,10 +34,9 @@ class Sanpham extends Model
      *
      * @var array
      */
-    protected $carts = [
+    protected $casts = [
         'id_sanpham' => 'int',
         'tensp' => 'string',
-        'anhsp' => 'string',
         'giasp' => 'int',
         'mota' => 'string',
         'giamgia' => 'int',
@@ -65,5 +64,9 @@ class Sanpham extends Model
     public function danhMuc()
     {
         return $this->belongsTo(DanhMuc::class, 'id_danhmuc');
+    }
+    public function anhSp()
+    {
+        return $this->hasMany(AnhSP::class, 'id_sanpham', 'id_sanpham');
     }
 }

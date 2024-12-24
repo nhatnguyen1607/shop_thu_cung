@@ -61,6 +61,7 @@
             <option value="chờ lấy hàng" {{ $order->trangthai == 'chờ lấy hàng' ? 'selected' : '' }}>Chờ lấy hàng</option>
             <option value="đang giao hàng" {{ $order->trangthai == 'đang giao hàng' ? 'selected' : '' }}>Đang giao hàng</option>
             <option value="giao thành công" {{ $order->trangthai == 'giao thành công' ? 'selected' : '' }}>Giao thành công</option>
+            <option value="giao thành công" {{ $order->trangthai == 'đã hủy' ? 'selected' : '' }}> Hủy</option>
         </select>
     </div>
 

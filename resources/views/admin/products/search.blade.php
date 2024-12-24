@@ -6,7 +6,7 @@
     <div class="d-flex justify-content-between">
         <a class="btn btn-primary" href="{{route('product.create')}}">Thêm sản phẩm</a>
       
-        <form action="{{route('adminSearch')}}" method="GET" class="d-flex">
+        <form action="{{route('productSearch')}}" method="GET" class="d-flex">
             <input type="text" value="" placeholder="Nhập để tìm kiếm..." name="tukhoa" class="form-control" style="width: unset;" required>
             <button class="btn btn-primary" type="submit">
               <i class="align-middle" data-feather="search"></i> 
@@ -29,7 +29,7 @@
             @foreach ($searchs as $product)
             <tr>
             <td>{{$product->tensp}}</td>
-            <td><img src="{{ asset($product->anhsp)}}" width="120" height="120" alt=""></td>
+            <td><img src="{{ asset($product->first_image)}}" width="120" height="120" alt=""></td>
             <td>{{$product->soluong}}</td>
             <td>{{$product->giasp}}</td>
             <td colspan="2">

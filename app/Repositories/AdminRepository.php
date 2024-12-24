@@ -40,12 +40,6 @@ class AdminRepository implements IAdminRepository
         return redirect('/admin');
     }
 
-    public function searchProduct($data)
-    {
-        $searchKeyword = $data->input('tukhoa');
-        return Sanpham::where('tensp', 'like', '%' . $searchKeyword . '%')->paginate(5);
-    }
-
     public function getOrderView()
     {
         return Dathang::orderby('id_dathang', 'desc')->take(6)->get();

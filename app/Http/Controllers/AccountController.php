@@ -14,6 +14,9 @@ class AccountController extends Controller
 {
     public function index()
     {
+        if (!Auth::check()) {
+            return redirect('/login')->with('error', 'Bạn cần đăng nhập để xem thông tin tài khoản.');
+        }
         return view('user.profile');
     }
     public function update(Request $request){

@@ -43,10 +43,15 @@
 										<?php
 										$thongbao = session('thongbao');
 										if ($thongbao) {
-											echo '<div class="text-danger text-center"> ' . $thongbao . ' </div>';
+											echo '<div class="text-danger text-center" id="errorMessage"> ' . $thongbao . ' </div>';
 											session()->forget('thongbao');
 										}
 										?>
+										<script>
+											setTimeout(function() {
+												document.getElementById('errorMessage').style.display = 'none';
+											}, 2000);
+										</script>
 									</div>
 
 									<form action="{{ URL::to('/signinDashboard') }}" method="post">

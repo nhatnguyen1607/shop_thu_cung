@@ -1,12 +1,27 @@
 @extends('layout')
 @section('content')
 <br>
-@if(session('error'))
-<div class="alert alert-danger">{{ session('error') }}</div>
+
+@if(Session::has('error'))
+<div id="errorMessage" class="alert alert-danger" role="alert">
+    {{ Session::pull('error') }}
+</div>
+<script>
+    setTimeout(function() {
+        document.getElementById('errorMessage').style.display = 'none';
+    }, 2000);
+</script>
 @endif
 
-@if(session('message'))
-<div class="alert alert-success">{{ session('message') }}</div>
+@if(Session::has('success'))
+<div id="successMessage" class="alert alert-success" role="alert">
+    {{ Session::pull('success') }}
+</div>
+<script>
+    setTimeout(function() {
+        document.getElementById('successMessage').style.display = 'none';
+    }, 2000);
+</script>
 @endif
 @php
 $order = session('order');

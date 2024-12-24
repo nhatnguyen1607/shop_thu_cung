@@ -16,9 +16,9 @@
     </div>
 </div>
 
-@if(Session::has('message'))
+@if(Session::has('success'))
 <div id="successMessage" class="alert alert-success" role="alert">
-    {{ Session::pull('message') }}
+    {{ Session::pull('success') }}
 </div>
 <script>
     setTimeout(function() {
@@ -44,7 +44,7 @@
                     <a href="{{ route('detail', ['id' => $noibat->id_sanpham]) }}">
                         <div class="product">
                             <div class="product__img">
-                                <img src="{{$noibat->anhsp}}" alt="Product Image">
+                                <img src="{{ asset($noibat->anhSp->first()->anh_sp) }}" alt="Product Image">
                             </div>
                             <div class="product__sale">
                                 <div>
@@ -107,7 +107,7 @@
                     <a href="{{ route('detail', ['id' => $sanpham->id_sanpham]) }}">
                         <div class="product">
                             <div class="product__img">
-                                <img src="{{$sanpham->anhsp}}" alt="Product Image">
+                                <img src="{{$sanpham->anhSp->first()->anh_sp}}" alt="Product Image">
                             </div>
                             <div class="product__sale">
                                 <div>
@@ -115,7 +115,7 @@
                                     Hết hàng
                                     @elseif($sanpham->giamgia)
                                     -{{$sanpham->giamgia}}%
-                                    @else Mới
+                                    @else
                                     @endif
                                 </div>
                             </div>
@@ -179,7 +179,7 @@
             <a href="{{ route('detail', ['id' => $all->id_sanpham]) }}">
                 <div class="product">
                     <div class="product__img">
-                        <img src="{{$all->anhsp}}" alt="Product Image">
+                        <img src="{{$all->anhSp->first()->anh_sp}}" alt="Product Image">
                     </div>
                     <div class="product__sale">
                         <div>
@@ -187,7 +187,6 @@
                             Hết hàng
                             @elseif($all->giamgia)
                             -{{$all->giamgia}}%
-                            @else Mới
                             @endif
                         </div>
                     </div>

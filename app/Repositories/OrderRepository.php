@@ -16,6 +16,7 @@ class OrderRepository implements IOrderRepository
         if(!empty($filterStatus)){
             $query->where('trangthai', $filterStatus);
         }
+        $query->orderBy('id_dathang','desc');
         return $query->paginate(10);
     }
     public function findOrder($id)
@@ -46,6 +47,6 @@ class OrderRepository implements IOrderRepository
 
     public function orderView($id)
     {
-        return Dathang::where('id_kh', $id)->get();
+        return Dathang::where('id_kh', $id)->orderBy('id_dathang','desc')->get();
     }
 }

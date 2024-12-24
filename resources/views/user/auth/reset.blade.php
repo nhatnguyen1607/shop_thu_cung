@@ -5,15 +5,29 @@
     <div class="height360">
         <div class="main">
             @if ($errors->any())
-            <div class="alert alert-danger">
+            <div class="alert alert-danger" id="errorMessage">
                 <ul>
                     @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
+                    <li>{{ $error }}</li>
                     @endforeach
                 </ul>
             </div>
+            <script>
+                setTimeout(function() {
+                    document.getElementById('errorMessage').style.display = 'none';
+                }, 2000);
+            </script>
             @endif
-
+            @if(Session::has('success'))
+            <div id="successMessage" class="alert alert-success" role="alert">
+                {{ Session::pull('success') }}
+            </div>
+            <script>
+                setTimeout(function() {
+                    document.getElementById('successMessage').style.display = 'none';
+                }, 2000);
+            </script>
+            @endif
             <form action="{{ route('password.update') }}" method="POST">
                 @csrf
                 <input type="hidden" name="token" value="{{ $token }}">

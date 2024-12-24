@@ -173,7 +173,7 @@
                         @elseif ($order->trangthai == 'chờ lấy hàng')
                         <span class="badge bg-warning text-white">{{$order->trangthai}}</span>
                         @elseif ($order->trangthai == 'đang giao hàng')
-                        <span class="badge bg-success text-white">{{$order->trangthai}}</span>
+                        <span class="badge bg-info text-white">{{$order->trangthai}}</span>
                         @elseif ($order->trangthai == 'giao thành công')
                         <span class="badge bg-success text-white">{{$order->trangthai}}</span>
                         @else

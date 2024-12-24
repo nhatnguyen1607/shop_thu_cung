@@ -9,13 +9,14 @@
             <a href="{{ route('detail', ['id' => $cat->id_sanpham]) }}">
                 <div class="product">
                     <div class="product__img">
-                        <img src="{{$cat->anhsp}}" alt="">
+                        <img src="{{$cat->anhSp->first()->anh_sp}}" alt="">
                     </div>
                     <div class="product__sale">
                         <div>
-                            @if($cat->giamgia)
+                            @if($cat->soluong == 0)
+                            Hết hàng
+                            @elseif($cat->giamgia)
                             -{{$cat->giamgia}}%
-                            @else Mới
                             @endif
                         </div>
                     </div>
@@ -49,6 +50,6 @@
         @endforeach
 
     </div>
-
+    <a class="btn btn-secondary" href="{{URL::to('/thucung')}}">Quay lại</a>
 </div>
 @endsection

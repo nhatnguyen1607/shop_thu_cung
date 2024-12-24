@@ -12,11 +12,27 @@
         </div>
     </div>
 </form>
-@if(session('success'))
-    <div class="alert alert-success mt-3">
-        {{ session('success') }}
-    </div>
-    @endif
+@if(Session::has('error'))
+<div id="errorMessage" class="alert alert-danger" role="alert">
+    {{ Session::pull('error') }}
+</div>
+<script>
+    setTimeout(function() {
+        document.getElementById('errorMessage').style.display = 'none';
+    }, 2000);
+</script>
+@endif
+
+@if(Session::has('success'))
+<div id="successMessage" class="alert alert-success" role="alert">
+    {{ Session::pull('success') }}
+</div>
+<script>
+    setTimeout(function() {
+        document.getElementById('successMessage').style.display = 'none';
+    }, 2000);
+</script>
+@endif
 <div class="card flex-fill">
     <table class="table table-hover my-0">
         <thead>
@@ -36,15 +52,15 @@
                 <td>{{ $member->email }}</td>
                 <td>
                     @if($member->trangthai === 'unlock')
-                        <form action="{{ route('admin.thanhvien.lock', $member->idtaikhoan) }}" method="POST" style="display: inline;">
-                            @csrf
-                            <button type="submit" class="btn btn-warning">Khóa tài khoản</button>
-                        </form>
+                    <form action="{{ route('admin.thanhvien.lock', $member->idtaikhoan) }}" method="POST" style="display: inline;">
+                        @csrf
+                        <button type="submit" class="btn btn-warning">Khóa tài khoản</button>
+                    </form>
                     @else
-                        <form action="{{ route('admin.thanhvien.unlock', $member->idtaikhoan) }}" method="POST" style="display: inline;">
-                            @csrf
-                            <button type="submit" class="btn btn-success">Mở khóa tài khoản</button>
-                        </form>
+                    <form action="{{ route('admin.thanhvien.unlock', $member->idtaikhoan) }}" method="POST" style="display: inline;">
+                        @csrf
+                        <button type="submit" class="btn btn-success">Mở khóa tài khoản</button>
+                    </form>
                     @endif
                 </td>
             </tr>

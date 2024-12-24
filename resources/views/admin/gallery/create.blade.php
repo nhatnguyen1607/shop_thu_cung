@@ -7,9 +7,30 @@
     @csrf
     <div class="form-group mb-3">
         <label for="anhgallery">Ảnh Gallery</label>
-        <input type="file" name="anhgallery" class="form-control" required>
+        <input type="file" name="anhgallery" class="form-control" id="image" required>
     </div>
-    <button type="submit" class="btn btn-primary">Thêm</button>
-</form>
+    <div id="imagePreview" class="mb-3"></div>
 
+    <button type="submit" class="btn btn-primary">Thêm</button>
+    <a class="btn btn-secondary" href="{{URL::to('/admin/gallery')}}">Quay lại</a>
+</form>
+<script>
+    document.getElementById('image').addEventListener('change', function() {
+        const file = this.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+
+            // Đặt chiều cao của hình ảnh
+            img.style.height = '200px';
+
+            document.getElementById('imagePreview').innerHTML = '';
+            document.getElementById('imagePreview').appendChild(img);
+        };
+
+        reader.readAsDataURL(file);
+    });
+</script>
 @endsection

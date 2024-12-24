@@ -12,6 +12,7 @@ use App\Models\Khachhang;
 use App\Models\Dathang;
 use App\Models\ChitietDonhang;
 use App\Models\Sanpham;
+use App\Models\AnhSP;
 
 
 class OrdersController extends Controller
@@ -30,11 +31,14 @@ class OrdersController extends Controller
         if ($sanpham->soluong < $quantity) {
             return redirect()->back()->with('error', 'Sản phẩm đã hết hàng.');
         }
+        $anhsp = AnhSP::where('id_sanpham', $sanpham->id_sanpham)
+            ->orderBy('id_anh', 'asc')
+            ->value('anh_sp');
+        Log::info($anhsp);
 
-        // Lưu thông tin đơn hàng vào session
         session(['order' => [
             'id' => $sanpham->id_sanpham,
-            'anhsp' => $sanpham->anhsp,
+            'anhsp' => $anhsp,
             'tensp' => $sanpham->tensp,
             'giasp' => $sanpham->giasp,
             'giamgia' => $sanpham->giamgia,
@@ -43,7 +47,6 @@ class OrdersController extends Controller
             'khachhang_id' => $khachhang->id_kh,
         ]]);
         return view('user.checkout');
-        // return redirect()->route('checkout');
     }
 
 
@@ -95,7 +98,7 @@ class OrdersController extends Controller
         $vnp_TxnRef = date("YmdHis");
         $vnp_OrderInfo = "Thanh toán hóa đơn phí dịch vụ";
         $vnp_OrderType = 'billpayment';
-        $vnp_Amount = $order['giakhuyenmai'] ?: $order['giasp'] * $order['quantity'] * 100;
+        $vnp_Amount = $request->tongtien * 100;
         $vnp_Locale = 'vn';
         $vnp_IpAddr = request()->ip();
 

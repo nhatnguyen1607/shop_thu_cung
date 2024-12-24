@@ -8,13 +8,14 @@
             <a href="{{ route('detail', ['id' => $dog->id_sanpham]) }}">
                 <div class="product">
                     <div class="product__img">
-                        <img src="{{$dog->anhsp}}" alt="">
+                        <img src="{{$dog->anhSp->first()->anh_sp}}" alt="">
                     </div>
                     <div class="product__sale">
                         <div>
-                            @if($dog->giamgia)
+                            @if($dog->soluong == 0)
+                            Hết hàng
+                            @elseif($dog->giamgia)
                             -{{$dog->giamgia}}%
-                            @else Mới
                             @endif
                         </div>
                     </div>
@@ -47,6 +48,7 @@
         </div>
         @endforeach
     </div>
+    <a class="btn btn-secondary" href="{{URL::to('/thucung')}}">Quay lại</a>
 </div>
 
 @endsection

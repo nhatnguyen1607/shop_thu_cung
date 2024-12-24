@@ -45,6 +45,9 @@ class GalleryController extends Controller
     }
     public function delete($id)
     {
+        $gallery = $this->galleryRepository->findById($id);
+        $filePath = public_path($gallery->anhgallery);
+        unlink($filePath);
         $this->galleryRepository->delete($id);
         return redirect()->route('gallery.index')->with('success', 'Xóa gallery thành công');
     }

@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class AnhSP extends Model
 {
     use HasFactory;
-
-    protected $fillable = ['id_sanpham', 'anhsp'];
+    protected $table = 'anh_sp';
+    protected $fillable = ['id_sanpham', 'anh_sp'];
     public $timestamps = false;
     public function sanpham()
     {

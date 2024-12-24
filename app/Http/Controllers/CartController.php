@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Query\Builder;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
@@ -27,20 +28,35 @@ class CartController extends Controller
         if (!Auth::check()) {
             return redirect('/login')->with('error', 'Bạn cần đăng nhập để xem giỏ hàng.');
         }
+
         $user = Auth::user();
         $khachhang = Khachhang::where('idtaikhoan', $user->idtaikhoan)->first();
-        if (Auth::check()) {
-            $cartItems = DB::table('giohang')
-                ->join('sanpham', 'giohang.sanpham_id', '=', 'sanpham.id_sanpham')
-                ->where('giohang.khachhang_id', $khachhang->id_kh)
-                ->select('giohang.*', 'sanpham.tensp', 'sanpham.anhsp', 'sanpham.giasp', 'sanpham.giamgia', 'sanpham.giakhuyenmai')
-                ->get();
 
-            return view('user.cart', ['cartItems' => $cartItems]);
+        if (!$khachhang) {
+            return redirect()->back()->with('error', 'Không tìm thấy thông tin khách hàng.');
         }
 
-        return redirect('/login')->with('error', 'Vui lòng đăng nhập để xem giỏ hàng');
+        $cartItems = DB::table('giohang')
+            ->join('sanpham', 'giohang.sanpham_id', '=', 'sanpham.id_sanpham')
+            ->leftJoin('anh_sp', function ($join) {
+                $join->on('sanpham.id_sanpham', '=', 'anh_sp.id_sanpham')
+                    ->where('anh_sp.id_anh', '=', DB::raw("(SELECT MIN(id_anh) FROM anh_sp WHERE anh_sp.id_sanpham = sanpham.id_sanpham)"));
+            })
+            ->where('giohang.khachhang_id', $khachhang->id_kh)
+            ->select(
+                'giohang.*',
+                'sanpham.tensp',
+                'sanpham.giasp',
+                'sanpham.giamgia',
+                'sanpham.giakhuyenmai',
+                'anh_sp.anh_sp as anhsp'
+            )
+            ->get();
+        Log::info($cartItems);
+
+        return view('user.cart', ['cartItems' => $cartItems]);
     }
+
 
     public function addToCart($id)
     {
@@ -48,7 +64,7 @@ class CartController extends Controller
             return redirect('/login')->with('error', 'Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.');
         }
         $product = Sanpham::findOrFail($id);
-        if ($product->soluong == 0) {
+        if ($product->soluong < 1) {
             return redirect()->back()->with('error', 'Sản phẩm đã hết hàng.');
         }
         $user = Auth::user();
@@ -90,7 +106,6 @@ class CartController extends Controller
         $user = Auth::user();
         $khachhang = Khachhang::where('idtaikhoan', $user->idtaikhoan)->first();
         if (Auth::check()) {
-            // Cập nhật số lượng trong bảng giohang dựa trên id và khachhang_id
             $updated = DB::table('giohang')
                 ->where('id', $request->id)
                 ->where('khachhang_id', $khachhang->id_kh)
@@ -121,8 +136,6 @@ class CartController extends Controller
         return response()->json(['error' => 'Có lỗi xảy ra khi xóa sản phẩm'], 400);
     }
 
-
-    //Xử lí order trong giỏ hàng
     public function orderfromcart()
     {
         $user = Auth::user();
@@ -131,11 +144,28 @@ class CartController extends Controller
 
         $cartItems = DB::table('giohang')
             ->join('sanpham', 'giohang.sanpham_id', '=', 'sanpham.id_sanpham')
-            ->where('giohang.khachhang_id', $khachhang_id)
-            ->select('giohang.*', 'sanpham.tensp', 'sanpham.giasp', 'sanpham.giamgia', 'sanpham.anhsp', 'sanpham.giakhuyenmai')
+            ->leftJoin('anh_sp', function ($join) {
+                $join->on('sanpham.id_sanpham', '=', 'anh_sp.id_sanpham')
+                    ->where('anh_sp.id_anh', '=', DB::raw("(SELECT MIN(id_anh) FROM anh_sp WHERE anh_sp.id_sanpham = sanpham.id_sanpham)"));
+            })
+            ->where('giohang.khachhang_id', $khachhang->id_kh)
+            ->select(
+                'giohang.*',
+                'sanpham.tensp',
+                'sanpham.giasp',
+                'sanpham.giamgia',
+                'sanpham.giakhuyenmai',
+                'anh_sp.anh_sp as anhsp'
+            )
             ->get();
         if ($cartItems->isEmpty()) {
             return redirect()->back()->with('error', 'Giỏ hàng của bạn hiện tại trống. Vui lòng thêm sản phẩm trước khi đặt hàng.');
+        }
+        foreach ($cartItems as $item) {
+            $sanpham = Sanpham::find($item->sanpham_id);
+            if ($sanpham->soluong < $item->quantity) {
+                return redirect()->back()->with('error', 'Sản phẩm ' . $sanpham->tensp . ' không đủ số lượng!');
+            }
         }
         $showusers = DB::table('khachhang')->where('id_kh', $khachhang_id)->get();
 
@@ -254,7 +284,6 @@ class CartController extends Controller
             $vnp_Url .= 'vnp_SecureHashType=SHA256&vnp_SecureHash=' . $vnpSecureHash;
         }
 
-        //--------------------------------------------------------------
         $this->checkoutfromcart($request);
         return redirect($vnp_Url);
     }

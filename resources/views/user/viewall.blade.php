@@ -14,13 +14,14 @@
                 <a href="{{ route('detail', ['id' => $sanpham->id_sanpham]) }}">
                     <div class="product">
                         <div class="product__img">
-                            <img src="{{$sanpham->anhsp}}" alt="">
+                            <img src="{{$sanpham->anhSp->first()->anh_sp}}" alt="">
                         </div>
                         <div class="product__sale">
                             <div>
-                                @if($sanpham->giamgia)
+                                @if($sanpham->soluong == 0)
+                                Hết hàng
+                                @elseif($sanpham->giamgia)
                                 -{{$sanpham->giamgia}}%
-                                @else Mới
                                 @endif
                             </div>
                         </div>
